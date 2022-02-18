@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using ChinookAPI.Models;
+using Microsoft.Data.SqlClient;
 
 namespace ChinookAPI.Repositories
 {
@@ -32,9 +33,45 @@ namespace ChinookAPI.Repositories
             }
         }
 
-        public List<Customer> GetHighestSpendingCustomers()
+        public List<HighestSpending> GetHighestSpendingCustomers()
         {
-            throw new NotImplementedException();
+            string query = "SELECT cust.FirstName, cust.LastName, SUM(inv.Total) AS total " +
+                "FROM invoice AS inv JOIN customer AS cust ON cust.CustomerId = inv.CustomerId" +
+                " GROUP BY inv.CustomerId, cust.FirstName, cust.LastName " +
+                "ORDER BY total DESC";
+
+            List<HighestSpending> spenderList = new();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionHelper.GetConnectionString()))
+                {
+                    connection.Open();  
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using(SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                HighestSpending spender = new HighestSpending()
+                                {
+                                    FirstName = reader.GetString(0),
+                                    LastName = reader.GetString(1),
+                                    Total = reader.GetDecimal(2)
+                                };
+
+                                spenderList.Add(spender);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return spenderList;
         }
 
         public List<Genre> GetMostPopularGenreForCustomer(int customerId)
