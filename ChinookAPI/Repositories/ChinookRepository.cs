@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using ChinookAPI.Models;
-using ChinookAPI.Repositories;
 
 namespace ChinookAPI.Repositories
 {
@@ -10,30 +9,27 @@ namespace ChinookAPI.Repositories
     {
         public bool CreateCustomer(Customer newCustomer)
         {
-            try
+            using (ChinookContext context = new ChinookContext())
             {
-                using (ChinookContext context = new ChinookContext())
-                {
-                    context.Customers.Add(newCustomer);
-                    return context.SaveChanges() > 0;
-                }
+                context.Customers.Add(newCustomer);
+                return context.SaveChanges() > 0;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-
-            return false;
         }
 
         public List<Customer> FindMatchingCustomerWithName(string name)
         {
-            throw new NotImplementedException();
+            using (ChinookContext context = new ChinookContext())
+            {
+                return context.Customers.Where(customer => customer.FirstName.Contains(name) || customer.LastName.Contains(name)).ToList();
+            }
         }
 
         public Customer GetCustomer(int customerId)
         {
-            throw new NotImplementedException();
+            using (ChinookContext context = new ChinookContext())
+            {
+                return context.Customers.FirstOrDefault(customer => customer.CustomerId == customerId);
+            }
         }
 
         public List<Customer> GetHighestSpendingCustomers()
@@ -43,7 +39,7 @@ namespace ChinookAPI.Repositories
 
         public List<Genre> GetMostPopularGenreForCustomer(int customerId)
         {
-            return new List<Genre>();
+            throw new NotImplementedException();
         }
 
         public List<Customer> GetNumberOfCustomers(int limit, int offset)
@@ -68,7 +64,7 @@ namespace ChinookAPI.Repositories
         {
             using (ChinookContext context = new ChinookContext())
             {
-                Customer foundCustomer = context.Customers.First(customer => customer.CustomerId == customerId);
+                Customer foundCustomer = context.Customers.FirstOrDefault(customer => customer.CustomerId == customerId);
                 if (foundCustomer != null)
                 {
                     foundCustomer.FirstName = updatedCustomerData.FirstName;
