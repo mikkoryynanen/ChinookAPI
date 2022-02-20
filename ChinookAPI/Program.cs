@@ -33,11 +33,16 @@ namespace ChinookAPI
             //var c = repository.GetCustomer(1);
             //Console.WriteLine(c);
 
-            static IEnumerable<Customer> AllCustomers(IChinookRepository repository)
+            static void AllCustomers(IChinookRepository repository)
             {
                 IEnumerable<Customer> allCustomers = repository.GetAllCustomers();
-                return allCustomers;
+                foreach (Customer customer in allCustomers)
+                {
+                    Console.WriteLine(customer.ToString());
+                }
             }
+
+            AllCustomers(repository);
 
             static void HighestSpendingCustomers(IChinookRepository repository)
             {
@@ -46,10 +51,9 @@ namespace ChinookAPI
                 {
                     Console.WriteLine(highestSpendingCustomer.ToString());
                 }
-                
             }
 
-            //(repository);
+            HighestSpendingCustomers(repository);
 
             static void CustomersPerCountry(IChinookRepository repository)
             {
@@ -60,7 +64,7 @@ namespace ChinookAPI
                 }
             }
 
-            //(repository);
+            CustomersPerCountry(repository);
         }
     }
 }
