@@ -52,6 +52,14 @@ namespace ChinookAPI
 
             //UserById(repository);
 
+            static void UserByName(IChinookRepository repository)
+            {
+                Customer customerByName = repository.FindMatchingCustomerWithName("Sullivan");
+                Console.WriteLine(customerByName.ToString());
+            }
+
+            //UserByName(repository);
+
             static void HighestSpendingCustomers(IChinookRepository repository)
             {
                 IEnumerable<HighestSpending> highestSpendingCustomers = repository.GetHighestSpendingCustomers();

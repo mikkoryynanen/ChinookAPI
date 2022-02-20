@@ -97,6 +97,52 @@ namespace ChinookAPI.Repositories
             return customerById;
         }
 
+        public Customer FindMatchingCustomerWithName(string namePart)
+        {
+            string query = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email " +
+                           "FROM Customer " +
+                           "WHERE FirstName LIKE @namepart OR LastName LIKE @namepart";
+
+            Customer customerByName = new Customer();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionHelper.GetConnectionString()))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@namepart", namePart);
+                        
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                           while (reader.Read())
+                            {
+                                customerByName = new Customer()
+                                {
+                                    CustomerId = reader.GetInt32(0),
+                                    FirstName = reader.GetString(1),
+                                    LastName = reader.GetString(2),
+                                    Country = reader.GetString(3),  
+                                    PostalCode = reader.GetString(4),
+                                    Phone = reader.GetString(5),
+                                    Email = reader.GetString(6)
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return customerByName;
+        }
+
         public bool CreateCustomer(Customer newCustomer)
         {
             using (ChinookContext context = new ChinookContext())
@@ -105,16 +151,6 @@ namespace ChinookAPI.Repositories
                 return context.SaveChanges() > 0;
             }
         }
-
-        public List<Customer> FindMatchingCustomerWithName(string name)
-        {
-            using (ChinookContext context = new ChinookContext())
-            {
-                return context.Customers.Where(customer => customer.FirstName.Contains(name) || customer.LastName.Contains(name)).ToList();
-            }
-        }
-
-        
 
         public IEnumerable<HighestSpending> GetHighestSpendingCustomers()
         {

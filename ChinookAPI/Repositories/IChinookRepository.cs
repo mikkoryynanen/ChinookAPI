@@ -7,9 +7,8 @@ namespace ChinookAPI.Repositories
     {
         IEnumerable<Customer> GetAllCustomers();
         Customer GetCustomer(int customerId);
+        Customer FindMatchingCustomerWithName(string namePart);
         List<Customer> GetNumberOfCustomers(int limit, int offset);
-        
-        List<Customer> FindMatchingCustomerWithName(string name);
         bool CreateCustomer(Customer newCustomer);
         bool UpdateCustomer(int customerId, Customer updatedCustomerData);
         IEnumerable<PerCountry> GetUserCountPerCountry();
