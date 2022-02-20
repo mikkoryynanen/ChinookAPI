@@ -5,7 +5,7 @@ namespace ChinookAPI.Repositories
 {
     public interface IChinookRepository
     {
-        List<Customer> GetAllCustomers();
+        IEnumerable<Customer> GetAllCustomers();
         List<Customer> GetNumberOfCustomers(int limit, int offset);
         Customer GetCustomer(int customerId);
         List<Customer> FindMatchingCustomerWithName(string name);

@@ -28,5 +28,10 @@ namespace ChinookAPI.Models
 
         public virtual Employee SupportRep { get; set; }
         public virtual ICollection<Invoice> Invoices { get; set; }
+
+        public override string ToString()
+        {
+            return $"\n{CustomerId} \n{FirstName} \n{LastName} \n{Country} \n{PostalCode} \n{Phone} \n{Email}";
+        }
     }
 }

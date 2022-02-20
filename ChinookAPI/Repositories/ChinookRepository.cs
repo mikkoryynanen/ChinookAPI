@@ -8,6 +8,49 @@ namespace ChinookAPI.Repositories
 {
     public class ChinookRepository: IChinookRepository
     {
+        public IEnumerable<Customer> GetAllCustomers()
+        {
+            string query = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email " +
+                           "FROM Customer";
+
+            List<Customer> customersList = new List<Customer>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionHelper.GetConnectionString()))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Customer temp = new Customer()
+                                {
+                                    CustomerId = reader.GetInt32(0),
+                                    FirstName = reader.GetString(1),
+                                    LastName = reader.GetString(2),
+                                    Country = reader.GetString(3),
+                                    PostalCode = reader.GetString(4),
+                                    Phone = reader.GetString(5),
+                                    Email = reader.GetString(6)
+                                };
+
+                                customersList.Add(temp);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return customersList;
+        }
+
         public bool CreateCustomer(Customer newCustomer)
         {
             using (ChinookContext context = new ChinookContext())
@@ -125,13 +168,7 @@ namespace ChinookAPI.Repositories
             return perCountryList;
         }
 
-        public List<Customer> GetAllCustomers()
-        {
-            using (ChinookContext context = new ChinookContext())
-            {
-                return context.Customers.ToList();
-            }
-        }
+
 
         public bool UpdateCustomer(int customerId, Customer updatedCustomerData)
         {
