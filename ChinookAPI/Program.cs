@@ -69,7 +69,14 @@ namespace ChinookAPI
                 }
             }
 
-            PageOfCustomers(repository);
+            //PageOfCustomers(repository);
+
+            static void CreateCustomer(IChinookRepository repository)
+            {
+               // TEST
+            }
+            
+            CreateCustomer(repository);
 
             static void HighestSpendingCustomers(IChinookRepository repository)
             {
@@ -79,6 +86,7 @@ namespace ChinookAPI
                     Console.WriteLine(highestSpendingCustomer.ToString());
                 }
             }
+
 
             //HighestSpendingCustomers(repository);
 

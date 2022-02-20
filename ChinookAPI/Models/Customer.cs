@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ChinookAPI.Models
 {
-    public partial class Customer
+    public class Customer
     {
         public Customer()
         {
@@ -24,7 +24,7 @@ namespace ChinookAPI.Models
         public string Phone { get; set; }
         public string Fax { get; set; }
         public string Email { get; set; }
-        public int? SupportRepId { get; set; }
+        public int SupportRepId { get; set; }
 
         public virtual Employee SupportRep { get; set; }
         public virtual ICollection<Invoice> Invoices { get; set; }

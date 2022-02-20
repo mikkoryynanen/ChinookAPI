@@ -46,7 +46,7 @@ namespace ChinookAPI.Repositories
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message, ex);
             }
 
             return customersList;
@@ -124,9 +124,9 @@ namespace ChinookAPI.Repositories
                                     CustomerId = reader.GetInt32(0),
                                     FirstName = reader.GetString(1),
                                     LastName = reader.GetString(2),
-                                    Country = reader.GetString(3),  
+                                    Country = reader.GetString(3),
                                     PostalCode = reader.GetString(4),
-                                    Phone = reader.GetString(5),
+                                    Phone = reader.GetString(4),
                                     Email = reader.GetString(6)
                                 };
                             }
@@ -171,12 +171,12 @@ namespace ChinookAPI.Repositories
                                 Customer temp = new Customer()
                                 {
                                     CustomerId = reader.GetInt32(0),
-                                    FirstName = !reader.IsDBNull(1) ? reader.GetString(1) : "",
-                                    LastName = !reader.IsDBNull(2) ? reader.GetString(2) : "",
-                                    Country = !reader.IsDBNull(3) ? reader.GetString(3) : "",
-                                    PostalCode = !reader.IsDBNull(4) ? reader.GetString(4) : "",
-                                    Phone = !reader.IsDBNull(4) ? reader.GetString(5) : "",
-                                    Email = !reader.IsDBNull(5) ? reader.GetString(6) : ""
+                                    FirstName = reader.GetString(1),
+                                    LastName = reader.GetString(2),
+                                    Country = reader.GetString(3),
+                                    PostalCode = reader.GetString(4),
+                                    Phone = reader.GetString(5),
+                                    Email = reader.GetString(6)
                                 };
 
                                 customersPageList.Add(temp);
@@ -193,13 +193,39 @@ namespace ChinookAPI.Repositories
             return customersPageList;
         }
 
-        public bool CreateCustomer(Customer newCustomer)
+        public bool CreateCustomer(string firstName, string lastName, string country, string postalCode, string phone, string email)
         {
-            using (ChinookContext context = new ChinookContext())
+            string query = "INSERT INTO Customer(FirstName, LastName, Country, PostalCode, Phone, Email) " +
+                           "VALUES (@firstname, @lastname, @customercountry, @postalcode, @customerphone, @customeremail)";
+
+            bool affectedRows = false;
+
+            try
             {
-                context.Customers.Add(newCustomer);
-                return context.SaveChanges() > 0;
+                using (SqlConnection connection = new SqlConnection(ConnectionHelper.GetConnectionString()))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@firstname", firstName);
+                        command.Parameters.AddWithValue("@lastname", lastName);
+                        command.Parameters.AddWithValue("@customercountry", country);
+                        command.Parameters.AddWithValue("@postalcode", postalCode);
+                        command.Parameters.AddWithValue("@customerphone", phone);
+                        command.Parameters.AddWithValue("@customeremail", email);
+
+                        affectedRows = command.ExecuteNonQuery() > 0;
+                        connection.Close();
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return affectedRows;
         }
 
         public IEnumerable<HighestSpending> GetHighestSpendingCustomers()
