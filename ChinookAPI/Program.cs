@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ChinookAPI.Misc;
@@ -23,14 +24,26 @@ namespace ChinookAPI
             //    Console.WriteLine("customer generation failed");
             //}
 
-            var customers = repository.GetAllCustomers();
-            foreach (var c in customers)
-            {
-                Console.WriteLine(ConsumerInformationPrinter.BuildConsumerData(c));
-            }
+            //var customers = repository.GetAllCustomers();
+            //foreach (var c in customers)
+            //{
+            //    Console.WriteLine(ConsumerInformationPrinter.BuildConsumerData(c));
+            //}
 
             //var c = repository.GetCustomer(1);
             //Console.WriteLine(c);
+
+            static void TestHighestSpending(IChinookRepository repository)
+            {
+                IEnumerable<HighestSpending> highestSpendingCustomers = repository.GetHighestSpendingCustomers();
+                foreach (HighestSpending highestSpendingCustomer in highestSpendingCustomers)
+                {
+                    Console.WriteLine(highestSpendingCustomer.ToString());
+                }
+                
+            }
+
+            TestHighestSpending(repository);
         }
     }
 }

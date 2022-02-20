@@ -33,11 +33,11 @@ namespace ChinookAPI.Repositories
             }
         }
 
-        public List<HighestSpending> GetHighestSpendingCustomers()
+        public IEnumerable<HighestSpending> GetHighestSpendingCustomers()
         {
-            string query = "SELECT cust.FirstName, cust.LastName, SUM(inv.Total) AS total " +
-                "FROM invoice AS inv JOIN customer AS cust ON cust.CustomerId = inv.CustomerId" +
-                " GROUP BY inv.CustomerId, cust.FirstName, cust.LastName " +
+            string query = "SELECT customer.FirstName, customer.LastName, SUM(invoice.Total) AS total " +
+                "FROM Invoice AS invoice JOIN Customer AS customer ON customer.CustomerId = invoice.CustomerId" +
+                " GROUP BY invoice.CustomerId, customer.FirstName, customer.LastName " +
                 "ORDER BY total DESC";
 
             List<HighestSpending> spenderList = new();

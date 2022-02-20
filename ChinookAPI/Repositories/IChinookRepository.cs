@@ -12,7 +12,7 @@ namespace ChinookAPI.Repositories
         bool CreateCustomer(Customer newCustomer);
         bool UpdateCustomer(int customerId, Customer updatedCustomerData);
         Dictionary<string, int> GetUserCountPerCountry();
-        List<HighestSpending> GetHighestSpendingCustomers();
+        IEnumerable<HighestSpending> GetHighestSpendingCustomers();
         List<Genre> GetMostPopularGenreForCustomer(int customerId);
     }
 }
