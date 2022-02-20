@@ -36,9 +36,9 @@ namespace ChinookAPI.Repositories
         public IEnumerable<HighestSpending> GetHighestSpendingCustomers()
         {
             string query = "SELECT customer.FirstName, customer.LastName, SUM(invoice.Total) AS total " +
-                "FROM Invoice AS invoice JOIN Customer AS customer ON customer.CustomerId = invoice.CustomerId" +
-                " GROUP BY invoice.CustomerId, customer.FirstName, customer.LastName " +
-                "ORDER BY total DESC";
+                           "FROM Invoice AS invoice JOIN Customer AS customer ON customer.CustomerId = invoice.CustomerId " +
+                           "GROUP BY invoice.CustomerId, customer.FirstName, customer.LastName " +
+                           "ORDER BY total DESC";
 
             List<HighestSpending> spenderList = new();
 
@@ -54,14 +54,14 @@ namespace ChinookAPI.Repositories
                         {
                             while (reader.Read())
                             {
-                                HighestSpending spender = new HighestSpending()
+                                HighestSpending temp = new HighestSpending()
                                 {
                                     FirstName = reader.GetString(0),
                                     LastName = reader.GetString(1),
                                     Total = reader.GetDecimal(2)
                                 };
 
-                                spenderList.Add(spender);
+                                spenderList.Add(temp);
                             }
                         }
                     }
@@ -84,9 +84,45 @@ namespace ChinookAPI.Repositories
             throw new NotImplementedException();
         }
 
-        public Dictionary<string, int> GetUserCountPerCountry()
-        {
-            throw new NotImplementedException();
+        public IEnumerable<PerCountry> GetUserCountPerCountry()
+        { 
+            string query = "SELECT customer.Country, COUNT(*) AS count " +
+                           "FROM Customer AS customer " +
+                           "GROUP BY Country " +
+                           "ORDER BY count DESC";
+
+            List<PerCountry> perCountryList = new List<PerCountry>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionHelper.GetConnectionString()))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                PerCountry temp = new PerCountry()
+                                {
+                                    Country = reader.GetString(0),
+                                    Count = reader.GetInt32(1)
+                                };
+
+                                perCountryList.Add(temp);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return perCountryList;
         }
 
         public List<Customer> GetAllCustomers()
