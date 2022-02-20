@@ -42,7 +42,15 @@ namespace ChinookAPI
                 }
             }
 
-            AllCustomers(repository);
+            //AllCustomers(repository);
+
+            static void UserById(IChinookRepository repository)
+            {
+                Customer customerById = repository.GetCustomer(2);
+                Console.WriteLine(customerById.ToString());
+            }
+
+            //UserById(repository);
 
             static void HighestSpendingCustomers(IChinookRepository repository)
             {
@@ -53,7 +61,7 @@ namespace ChinookAPI
                 }
             }
 
-            HighestSpendingCustomers(repository);
+            //HighestSpendingCustomers(repository);
 
             static void CustomersPerCountry(IChinookRepository repository)
             {
@@ -64,7 +72,7 @@ namespace ChinookAPI
                 }
             }
 
-            CustomersPerCountry(repository);
+            //CustomersPerCountry(repository);
         }
     }
 }

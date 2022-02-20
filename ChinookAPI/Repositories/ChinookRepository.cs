@@ -48,7 +48,53 @@ namespace ChinookAPI.Repositories
             {
                 Console.WriteLine(ex.Message);
             }
+
             return customersList;
+        }
+
+        public Customer GetCustomer(int customerId)
+        {
+            string query = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email " +
+                           "FROM Customer " +
+                           "WHERE CustomerId = @id";
+
+            Customer customerById = new Customer();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionHelper.GetConnectionString()))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", customerId);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while ( reader.Read())
+                            {
+                                customerById = new Customer()
+                                {
+                                    CustomerId = reader.GetInt32(0),
+                                    FirstName = reader.GetString(1),
+                                    LastName = reader.GetString(2),
+                                    Country = reader.GetString(3),
+                                    PostalCode = reader.GetString(4),
+                                    Phone = reader.GetString(5),
+                                    Email = reader.GetString(6)
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return customerById;
         }
 
         public bool CreateCustomer(Customer newCustomer)
@@ -68,13 +114,7 @@ namespace ChinookAPI.Repositories
             }
         }
 
-        public Customer GetCustomer(int customerId)
-        {
-            using (ChinookContext context = new ChinookContext())
-            {
-                return context.Customers.FirstOrDefault(customer => customer.CustomerId == customerId);
-            }
-        }
+        
 
         public IEnumerable<HighestSpending> GetHighestSpendingCustomers()
         {
