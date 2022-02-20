@@ -60,6 +60,17 @@ namespace ChinookAPI
 
             //UserByName(repository);
 
+            static void PageOfCustomers(IChinookRepository repository)
+            {
+                IEnumerable<Customer> pageOfCustomers = repository.GetNumberOfCustomers(2, 4);
+                foreach (Customer customer in pageOfCustomers)
+                {
+                    Console.WriteLine(customer.ToString());
+                }
+            }
+
+            PageOfCustomers(repository);
+
             static void HighestSpendingCustomers(IChinookRepository repository)
             {
                 IEnumerable<HighestSpending> highestSpendingCustomers = repository.GetHighestSpendingCustomers();

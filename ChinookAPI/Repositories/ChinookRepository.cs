@@ -114,7 +114,6 @@ namespace ChinookAPI.Repositories
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@namepart", namePart);
-                        
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
@@ -141,6 +140,57 @@ namespace ChinookAPI.Repositories
             }
 
             return customerByName;
+        }
+
+        public IEnumerable<Customer> GetNumberOfCustomers(int offset, int limit)
+        {
+            string query = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email " +
+                           "FROM Customer " +
+                           "ORDER BY CustomerId " +
+                           "OFFSET @resultsoffset ROWS " +
+                           "FETCH NEXT @resultslimit ROWS ONLY";
+
+            List<Customer> customersPageList = new List<Customer>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionHelper.GetConnectionString()))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        ;
+                        command.Parameters.AddWithValue("@resultsoffset", offset);
+                        command.Parameters.AddWithValue("@resultslimit", limit);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Customer temp = new Customer()
+                                {
+                                    CustomerId = reader.GetInt32(0),
+                                    FirstName = !reader.IsDBNull(1) ? reader.GetString(1) : "",
+                                    LastName = !reader.IsDBNull(2) ? reader.GetString(2) : "",
+                                    Country = !reader.IsDBNull(3) ? reader.GetString(3) : "",
+                                    PostalCode = !reader.IsDBNull(4) ? reader.GetString(4) : "",
+                                    Phone = !reader.IsDBNull(4) ? reader.GetString(5) : "",
+                                    Email = !reader.IsDBNull(5) ? reader.GetString(6) : ""
+                                };
+
+                                customersPageList.Add(temp);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return customersPageList;
         }
 
         public bool CreateCustomer(Customer newCustomer)
@@ -194,11 +244,6 @@ namespace ChinookAPI.Repositories
         }
 
         public List<Genre> GetMostPopularGenreForCustomer(int customerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Customer> GetNumberOfCustomers(int limit, int offset)
         {
             throw new NotImplementedException();
         }
