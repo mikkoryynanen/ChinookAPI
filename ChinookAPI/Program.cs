@@ -109,7 +109,11 @@ namespace ChinookAPI
 
             static void MostPopularGenre(IChinookRepository repository)
             {
-                // TEST
+                IEnumerable<CustomerGenre> mostPopularGenre = repository.GetMostPopularGenreForCustomer(1);
+                foreach (CustomerGenre customerGenre in mostPopularGenre)
+                {
+                    Console.WriteLine(customerGenre.ToString());
+                }
             }
 
             MostPopularGenre(repository);

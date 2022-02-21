@@ -264,7 +264,8 @@ namespace ChinookAPI.Repositories
         public IEnumerable<CustomerSpender> GetHighestSpendingCustomers()
         {
             string query = "SELECT customer.FirstName, customer.LastName, SUM(invoice.Total) AS total " +
-                           "FROM Invoice AS invoice JOIN Customer AS customer ON customer.CustomerId = invoice.CustomerId " +
+                           "FROM Invoice AS invoice " +
+                           "JOIN Customer AS customer ON customer.CustomerId = invoice.CustomerId " +
                            "GROUP BY invoice.CustomerId, customer.FirstName, customer.LastName " +
                            "ORDER BY total DESC";
 
@@ -347,7 +348,50 @@ namespace ChinookAPI.Repositories
 
         public IEnumerable<CustomerGenre> GetMostPopularGenreForCustomer(int customerId)
         {
-            throw new NotImplementedException();
+            string query = "SELECT TOP 1 genre.Name, COUNT(genre.Name) AS count " +
+                           "FROM Customer AS customer " +
+                           "JOIN Invoice AS invoice ON customer.CustomerId = invoice.CustomerId " +
+                           "JOIN InvoiceLine AS invoiceline ON invoice.InvoiceId = invoiceline.InvoiceId " +
+                           "JOIN Track AS track ON invoiceline.TrackId = track.TrackId " +
+                           "JOIN Genre AS genre ON track.GenreId = genre.GenreId " +
+                           "WHERE customer.CustomerId = @id " +
+                           "GROUP BY genre.Name " +
+                           "ORDER BY count DESC";
+
+            List<CustomerGenre> genreList = new List<CustomerGenre>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionHelper.GetConnectionString()))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", customerId);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                CustomerGenre temp = new CustomerGenre()
+                                {
+                                    GenreName = GetSafeData.SafeGetString(reader, 0)
+                                    
+                                };
+
+                                genreList.Add(temp);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return genreList;
         }
     }
 }
