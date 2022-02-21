@@ -85,28 +85,35 @@ namespace ChinookAPI
 
             //UpdateCustomer(repository);
 
-            static void HighestSpendingCustomers(IChinookRepository repository)
-            {
-                IEnumerable<HighestSpending> highestSpendingCustomers = repository.GetHighestSpendingCustomers();
-                foreach (HighestSpending highestSpendingCustomer in highestSpendingCustomers)
-                {
-                    Console.WriteLine(highestSpendingCustomer.ToString());
-                }
-            }
-
-
-            //HighestSpendingCustomers(repository);
-
             static void CustomersPerCountry(IChinookRepository repository)
             {
-                IEnumerable<PerCountry> customersPerCountry = repository.GetUserCountPerCountry();
-                foreach (PerCountry customerPerCountry in customersPerCountry)
+                IEnumerable<CustomerCountry> customersPerCountry = repository.GetUserCountPerCountry();
+                foreach (CustomerCountry customerPerCountry in customersPerCountry)
                 {
                     Console.WriteLine(customerPerCountry.ToString());
                 }
             }
 
             //CustomersPerCountry(repository);
+
+            static void HighestSpendingCustomers(IChinookRepository repository)
+            {
+                IEnumerable<CustomerSpender> highestSpendingCustomers = repository.GetHighestSpendingCustomers();
+                foreach (CustomerSpender highestSpendingCustomer in highestSpendingCustomers)
+                {
+                    Console.WriteLine(highestSpendingCustomer.ToString());
+                }
+            }
+
+            //HighestSpendingCustomers(repository);
+
+            static void MostPopularGenre(IChinookRepository repository)
+            {
+                // TEST
+            }
+
+            MostPopularGenre(repository);
+
         }
     }
 }

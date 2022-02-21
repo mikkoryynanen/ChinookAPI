@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChinookAPI.Models
 {
-    public class PerCountry
+    public class CustomerCountry
     {
         public string Country { get; set; }
         public int Count { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChinookAPI.Models
 {
-    public class HighestSpending
+    public class CustomerSpender
     {
         public string FirstName { get; set; }   
         public string LastName { get; set; }    

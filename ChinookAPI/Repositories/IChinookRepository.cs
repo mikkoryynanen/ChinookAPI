@@ -11,8 +11,8 @@ namespace ChinookAPI.Repositories
         IEnumerable<Customer> GetNumberOfCustomers(int offset, int limit);
         bool CreateCustomer(string firstName, string lastName, string country, string postalCode, string phone, string email);
         bool UpdateCustomer(int customerId, string updatedPhone, string updatedEmail);
-        IEnumerable<PerCountry> GetUserCountPerCountry();
-        IEnumerable<HighestSpending> GetHighestSpendingCustomers();
-        List<Genre> GetMostPopularGenreForCustomer(int customerId);
+        IEnumerable<CustomerCountry> GetUserCountPerCountry();
+        IEnumerable<CustomerSpender> GetHighestSpendingCustomers();
+        IEnumerable<CustomerGenre> GetMostPopularGenreForCustomer(int customerId);
     }
 }

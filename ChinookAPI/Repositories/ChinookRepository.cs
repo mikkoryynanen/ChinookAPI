@@ -260,14 +260,14 @@ namespace ChinookAPI.Repositories
             return updateRowsAffected;
         }
 
-        public IEnumerable<HighestSpending> GetHighestSpendingCustomers()
+        public IEnumerable<CustomerSpender> GetHighestSpendingCustomers()
         {
             string query = "SELECT customer.FirstName, customer.LastName, SUM(invoice.Total) AS total " +
                            "FROM Invoice AS invoice JOIN Customer AS customer ON customer.CustomerId = invoice.CustomerId " +
                            "GROUP BY invoice.CustomerId, customer.FirstName, customer.LastName " +
                            "ORDER BY total DESC";
 
-            List<HighestSpending> spenderList = new();
+            List<CustomerSpender> spenderList = new();
 
             try
             {
@@ -281,7 +281,7 @@ namespace ChinookAPI.Repositories
                         {
                             while (reader.Read())
                             {
-                                HighestSpending temp = new HighestSpending()
+                                CustomerSpender temp = new CustomerSpender()
                                 {
                                     FirstName = reader.GetString(0),
                                     LastName = reader.GetString(1),
@@ -302,19 +302,14 @@ namespace ChinookAPI.Repositories
             return spenderList;
         }
 
-        public List<Genre> GetMostPopularGenreForCustomer(int customerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<PerCountry> GetUserCountPerCountry()
+        public IEnumerable<CustomerCountry> GetUserCountPerCountry()
         { 
             string query = "SELECT customer.Country, COUNT(*) AS count " +
                            "FROM Customer AS customer " +
                            "GROUP BY Country " +
                            "ORDER BY count DESC";
 
-            List<PerCountry> perCountryList = new List<PerCountry>();
+            List<CustomerCountry> perCountryList = new List<CustomerCountry>();
 
             try
             {
@@ -328,7 +323,7 @@ namespace ChinookAPI.Repositories
                         {
                             while (reader.Read())
                             {
-                                PerCountry temp = new PerCountry()
+                                CustomerCountry temp = new CustomerCountry()
                                 {
                                     Country = reader.GetString(0),
                                     Count = reader.GetInt32(1)
@@ -347,6 +342,11 @@ namespace ChinookAPI.Repositories
             }
 
             return perCountryList;
+        }
+
+        public IEnumerable<CustomerGenre> GetMostPopularGenreForCustomer(int customerId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
