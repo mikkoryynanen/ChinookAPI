@@ -76,7 +76,14 @@ namespace ChinookAPI
                // TEST
             }
             
-            CreateCustomer(repository);
+            //CreateCustomer(repository);
+
+            static void UpdateCustomer(IChinookRepository repository)
+            {
+                // TEST
+            }
+
+            //UpdateCustomer(repository);
 
             static void HighestSpendingCustomers(IChinookRepository repository)
             {

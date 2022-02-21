@@ -198,7 +198,7 @@ namespace ChinookAPI.Repositories
             string query = "INSERT INTO Customer(FirstName, LastName, Country, PostalCode, Phone, Email) " +
                            "VALUES (@firstname, @lastname, @customercountry, @postalcode, @customerphone, @customeremail)";
 
-            bool affectedRows = false;
+            bool createRowsAffected = false;
 
             try
             {
@@ -215,7 +215,7 @@ namespace ChinookAPI.Repositories
                         command.Parameters.AddWithValue("@customerphone", phone);
                         command.Parameters.AddWithValue("@customeremail", email);
 
-                        affectedRows = command.ExecuteNonQuery() > 0;
+                        createRowsAffected = command.ExecuteNonQuery() > 0;
                         connection.Close();
                     }
                 }
@@ -225,7 +225,39 @@ namespace ChinookAPI.Repositories
                 Console.WriteLine(ex.Message);
             }
 
-            return affectedRows;
+            return createRowsAffected;
+        }
+
+        public bool UpdateCustomer(int customerId, string updatedPhone, string updatedEmail)
+        {
+            string query = "UPDATE Customer " +
+                           "SET Phone = @updatedphone AND Email = @updatedemail " +
+                           "WHERE CustomerId = @id";
+
+            bool updateRowsAffected = false;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionHelper.GetConnectionString()))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", customerId);
+                        command.Parameters.AddWithValue("@updatedphone", updatedPhone);
+                        command.Parameters.AddWithValue("@updatedemail", updatedEmail);
+
+                        updateRowsAffected = command.ExecuteNonQuery() > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return updateRowsAffected;
         }
 
         public IEnumerable<HighestSpending> GetHighestSpendingCustomers()
@@ -266,6 +298,7 @@ namespace ChinookAPI.Repositories
             {
                 Console.WriteLine(ex.Message);
             }
+
             return spenderList;
         }
 
@@ -312,36 +345,8 @@ namespace ChinookAPI.Repositories
             {
                 Console.WriteLine(ex.Message);
             }
+
             return perCountryList;
-        }
-
-
-
-        public bool UpdateCustomer(int customerId, Customer updatedCustomerData)
-        {
-            using (ChinookContext context = new ChinookContext())
-            {
-                Customer foundCustomer = context.Customers.FirstOrDefault(customer => customer.CustomerId == customerId);
-                if (foundCustomer != null)
-                {
-                    foundCustomer.FirstName = updatedCustomerData.FirstName;
-                    foundCustomer.LastName = updatedCustomerData.LastName;
-                    foundCustomer.Company = updatedCustomerData.Company;
-                    foundCustomer.Address = updatedCustomerData.Address;
-                    foundCustomer.City = updatedCustomerData.City;
-                    foundCustomer.State = updatedCustomerData.State;
-                    foundCustomer.Country = updatedCustomerData.Country;
-                    foundCustomer.PostalCode = updatedCustomerData.PostalCode;
-                    foundCustomer.Phone = updatedCustomerData.Phone;
-                    foundCustomer.Fax = updatedCustomerData.Fax;
-                    foundCustomer.Email = updatedCustomerData.Email;
-                    foundCustomer.SupportRepId = updatedCustomerData.SupportRepId;
-                    foundCustomer.SupportRep = updatedCustomerData.SupportRep;
-                    foundCustomer.Invoices = foundCustomer.Invoices;
-                }
-
-                return context.SaveChanges() > 0;
-            }
         }
     }
 }
