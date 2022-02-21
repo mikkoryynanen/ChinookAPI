@@ -24,15 +24,6 @@ namespace ChinookAPI
             //    Console.WriteLine("customer generation failed");
             //}
 
-            //var customers = repository.GetAllCustomers();
-            //foreach (var c in customers)
-            //{
-            //    Console.WriteLine(ConsumerInformationPrinter.BuildConsumerData(c));
-            //}
-
-            //var c = repository.GetCustomer(1);
-            //Console.WriteLine(c);
-
             static void AllCustomers(IChinookRepository repository)
             {
                 IEnumerable<Customer> allCustomers = repository.GetAllCustomers();
@@ -116,7 +107,7 @@ namespace ChinookAPI
                 }
             }
 
-            MostPopularGenre(repository);
+            //MostPopularGenre(repository);
 
         }
     }
