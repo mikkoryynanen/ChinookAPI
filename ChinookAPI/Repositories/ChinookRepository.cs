@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using ChinookAPI.Models;
 using Microsoft.Data.SqlClient;
+using ChinookAPI.Misc;
 
 namespace ChinookAPI.Repositories
 {
@@ -30,12 +31,12 @@ namespace ChinookAPI.Repositories
                                 Customer temp = new Customer()
                                 {
                                     CustomerId = reader.GetInt32(0),
-                                    FirstName = reader.GetString(1),
-                                    LastName = reader.GetString(2),
-                                    Country = reader.GetString(3),
-                                    PostalCode = reader.GetString(4),
-                                    Phone = reader.GetString(5),
-                                    Email = reader.GetString(6)
+                                    FirstName = GetSafeData.SafeGetString(reader, 1),
+                                    LastName = GetSafeData.SafeGetString(reader, 2),
+                                    Country = GetSafeData.SafeGetString(reader, 3),
+                                    PostalCode = GetSafeData.SafeGetString(reader, 4),
+                                    Phone = GetSafeData.SafeGetString(reader, 5),
+                                    Email = GetSafeData.SafeGetString(reader, 6)
                                 };
 
                                 customersList.Add(temp);
@@ -77,12 +78,12 @@ namespace ChinookAPI.Repositories
                                 customerById = new Customer()
                                 {
                                     CustomerId = reader.GetInt32(0),
-                                    FirstName = reader.GetString(1),
-                                    LastName = reader.GetString(2),
-                                    Country = reader.GetString(3),
-                                    PostalCode = reader.GetString(4),
-                                    Phone = reader.GetString(5),
-                                    Email = reader.GetString(6)
+                                    FirstName = GetSafeData.SafeGetString(reader,1),
+                                    LastName = GetSafeData.SafeGetString(reader,2),
+                                    Country = GetSafeData.SafeGetString(reader,3),
+                                    PostalCode = GetSafeData.SafeGetString(reader,4),
+                                    Phone = GetSafeData.SafeGetString(reader,5),
+                                    Email = GetSafeData.SafeGetString(reader,6)
                                 };
                             }
                         }
@@ -122,12 +123,12 @@ namespace ChinookAPI.Repositories
                                 customerByName = new Customer()
                                 {
                                     CustomerId = reader.GetInt32(0),
-                                    FirstName = reader.GetString(1),
-                                    LastName = reader.GetString(2),
-                                    Country = reader.GetString(3),
-                                    PostalCode = reader.GetString(4),
-                                    Phone = reader.GetString(4),
-                                    Email = reader.GetString(6)
+                                    FirstName = GetSafeData.SafeGetString(reader,1),
+                                    LastName = GetSafeData.SafeGetString(reader,2),
+                                    Country = GetSafeData.SafeGetString(reader,3),
+                                    PostalCode = GetSafeData.SafeGetString(reader,4),
+                                    Phone = GetSafeData.SafeGetString(reader,4),
+                                    Email = GetSafeData.SafeGetString(reader,6)
                                 };
                             }
                         }
@@ -171,12 +172,12 @@ namespace ChinookAPI.Repositories
                                 Customer temp = new Customer()
                                 {
                                     CustomerId = reader.GetInt32(0),
-                                    FirstName = reader.GetString(1),
-                                    LastName = reader.GetString(2),
-                                    Country = reader.GetString(3),
-                                    PostalCode = reader.GetString(4),
-                                    Phone = reader.GetString(5),
-                                    Email = reader.GetString(6)
+                                    FirstName = GetSafeData.SafeGetString(reader,1),
+                                    LastName = GetSafeData.SafeGetString(reader,2),
+                                    Country = GetSafeData.SafeGetString(reader,3),
+                                    PostalCode = GetSafeData.SafeGetString(reader,4),
+                                    Phone = GetSafeData.SafeGetString(reader,5),
+                                    Email = GetSafeData.SafeGetString(reader,6)
                                 };
 
                                 customersPageList.Add(temp);
@@ -283,8 +284,8 @@ namespace ChinookAPI.Repositories
                             {
                                 CustomerSpender temp = new CustomerSpender()
                                 {
-                                    FirstName = reader.GetString(0),
-                                    LastName = reader.GetString(1),
+                                    FirstName = GetSafeData.SafeGetString(reader,0),
+                                    LastName = GetSafeData.SafeGetString(reader,1),
                                     Total = reader.GetDecimal(2)
                                 };
 
@@ -325,7 +326,7 @@ namespace ChinookAPI.Repositories
                             {
                                 CustomerCountry temp = new CustomerCountry()
                                 {
-                                    Country = reader.GetString(0),
+                                    Country = GetSafeData.SafeGetString(reader,0),
                                     Count = reader.GetInt32(1)
                                 };
 
