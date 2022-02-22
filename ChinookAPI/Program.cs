@@ -9,75 +9,71 @@ namespace ChinookAPI
     {
         static void Main(string[] args)
         {
-
             IChinookRepository repository = new ChinookRepository();
+
+            AllCustomers(repository);
+            UserById(repository);
+            UserByName(repository);
+            PageOfCustomers(repository);
+            CreateCustomer(repository);
+            UpdateCustomer(repository);
+            CustomersPerCountry(repository);
+            HighestSpendingCustomers(repository);
+            MostPopularGenre(repository);
         }
 
-        static void AllCustomers(IChinookRepository repository)
+        public static IEnumerable<Customer> AllCustomers(IChinookRepository repository)
         {
             IEnumerable<Customer> allCustomers = repository.GetAllCustomers();
-            foreach (Customer customer in allCustomers)
-            {
-                Console.WriteLine(customer.ToString());
-            }
+            return allCustomers;     
         }
 
-        static void UserById(IChinookRepository repository)
+        public static Customer UserById(IChinookRepository repository)
         {
             Customer customerById = repository.GetCustomer(2);
-            Console.WriteLine(customerById.ToString());
+            return customerById;
         }
 
-        static void UserByName(IChinookRepository repository)
+        public static Customer UserByName(IChinookRepository repository)
         {
             Customer customerByName = repository.FindMatchingCustomerWithName("Sullivan");
-            Console.WriteLine(customerByName.ToString());
+            return customerByName;
         }
 
-        static void PageOfCustomers(IChinookRepository repository)
+        public static IEnumerable<Customer> PageOfCustomers(IChinookRepository repository)
         {
             IEnumerable<Customer> pageOfCustomers = repository.GetNumberOfCustomers(2, 4);
-            foreach (Customer customer in pageOfCustomers)
-            {
-                Console.WriteLine(customer.ToString());
-            }
+            return pageOfCustomers;
         }
 
-        static void CreateCustomer(IChinookRepository repository)
+        public static bool CreateCustomer(IChinookRepository repository)
         {
-            // TEST
+            bool createCustomer = repository.CreateCustomer("first", "last", "country", "postal", "phone", "email");
+            return createCustomer;
         }
 
-        static void UpdateCustomer(IChinookRepository repository)
+        public static bool UpdateCustomer(IChinookRepository repository)
         {
-            // TEST
+            bool updateCustomer = repository.UpdateCustomer(59, "123123", "gg@email.com");
+            return updateCustomer;
         }
 
-        static void CustomersPerCountry(IChinookRepository repository)
+        public static IEnumerable<CustomerCountry> CustomersPerCountry(IChinookRepository repository)
         {
             IEnumerable<CustomerCountry> customersPerCountry = repository.GetUserCountPerCountry();
-            foreach (CustomerCountry customerPerCountry in customersPerCountry)
-            {
-                Console.WriteLine(customerPerCountry.ToString());
-            }
+            return customersPerCountry;
         }
 
-        static void HighestSpendingCustomers(IChinookRepository repository)
+        public static IEnumerable<CustomerSpender> HighestSpendingCustomers(IChinookRepository repository)
         {
             IEnumerable<CustomerSpender> highestSpendingCustomers = repository.GetHighestSpendingCustomers();
-            foreach (CustomerSpender highestSpendingCustomer in highestSpendingCustomers)
-            {
-                Console.WriteLine(highestSpendingCustomer.ToString());
-            }
+            return highestSpendingCustomers;
         }
 
-        static void MostPopularGenre(IChinookRepository repository)
+        public static IEnumerable<CustomerGenre> MostPopularGenre(IChinookRepository repository)
         {
-            IEnumerable<CustomerGenre> mostPopularGenre = repository.GetMostPopularGenreForCustomer(1);
-            foreach (CustomerGenre customerGenre in mostPopularGenre)
-            {
-                Console.WriteLine(customerGenre.ToString());
-            }
+            IEnumerable<CustomerGenre> mostPopularGenre = repository.GetMostPopularGenreForCustomer(2);
+            return mostPopularGenre;
         }
     }
 }

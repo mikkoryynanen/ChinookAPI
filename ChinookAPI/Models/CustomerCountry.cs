@@ -10,10 +10,5 @@ namespace ChinookAPI.Models
     {
         public string Country { get; set; }
         public int Count { get; set; }
-
-        public override string ToString()
-        {
-            return $"{Country}, {Count}";
-        }
     }
 }

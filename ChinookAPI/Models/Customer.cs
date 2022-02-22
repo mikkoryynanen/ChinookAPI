@@ -12,10 +12,5 @@ namespace ChinookAPI.Models
         public string PostalCode { get; set; } 
         public string Phone { get; set; }
         public string Email { get; set; }
-
-        public override string ToString()
-        {
-            return $"\n{CustomerId} \n{FirstName} \n{LastName} \n{Country} \n{PostalCode} \n{Phone} \n{Email}";
-        }
     }
 }

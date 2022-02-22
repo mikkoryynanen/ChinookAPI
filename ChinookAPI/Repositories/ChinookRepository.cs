@@ -217,7 +217,6 @@ namespace ChinookAPI.Repositories
                         command.Parameters.AddWithValue("@customeremail", email);
 
                         createRowsAffected = command.ExecuteNonQuery() > 0;
-                        connection.Close();
                     }
                 }
             }
