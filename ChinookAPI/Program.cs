@@ -46,15 +46,15 @@ namespace ChinookAPI
             return pageOfCustomers;
         }
 
-        public static bool CreateCustomer(IChinookRepository repository)
+        public static Customer CreateCustomer(IChinookRepository repository)
         {
-            bool createCustomer = repository.CreateCustomer("first", "last", "country", "postal", "phone", "email");
+            Customer createCustomer = repository.CreateCustomer("first", "last", "country", "postal", "phone", "email");
             return createCustomer;
         }
 
-        public static bool UpdateCustomer(IChinookRepository repository)
+        public static Customer UpdateCustomer(IChinookRepository repository)
         {
-            bool updateCustomer = repository.UpdateCustomer(59, "123123", "gg@email.com");
+            Customer updateCustomer = repository.UpdateCustomer(59, "123123", "gg@email.com");
             return updateCustomer;
         }
 

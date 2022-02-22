@@ -194,12 +194,10 @@ namespace ChinookAPI.Repositories
             return customersPageList;
         }
 
-        public bool CreateCustomer(string firstName, string lastName, string country, string postalCode, string phone, string email)
+        public Customer CreateCustomer(string firstName, string lastName, string country, string postalCode, string phone, string email)
         {
             string query = "INSERT INTO Customer(FirstName, LastName, Country, PostalCode, Phone, Email) " +
                            "VALUES (@firstname, @lastname, @customercountry, @postalcode, @customerphone, @customeremail)";
-
-            bool createRowsAffected = false;
 
             try
             {
@@ -216,7 +214,17 @@ namespace ChinookAPI.Repositories
                         command.Parameters.AddWithValue("@customerphone", phone);
                         command.Parameters.AddWithValue("@customeremail", email);
 
-                        createRowsAffected = command.ExecuteNonQuery() > 0;
+                        bool createRowsAffected = command.ExecuteNonQuery() > 0;
+
+                        return createRowsAffected ? new Customer
+                        {
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Country = country,
+                            PostalCode = postalCode,
+                            Phone = phone,
+                            Email = email
+                        } : null;
                     }
                 }
             }
@@ -225,16 +233,14 @@ namespace ChinookAPI.Repositories
                 Console.WriteLine(ex.Message);
             }
 
-            return createRowsAffected;
+            return null;
         }
 
-        public bool UpdateCustomer(int customerId, string updatedPhone, string updatedEmail)
+        public Customer UpdateCustomer(int customerId, string updatedPhone, string updatedEmail)
         {
             string query = "UPDATE Customer " +
-                           "SET Phone = @updatedphone AND Email = @updatedemail " +
+                           "SET Phone = @updatedphone, Email = @updatedemail " +
                            "WHERE CustomerId = @id";
-
-            bool updateRowsAffected = false;
 
             try
             {
@@ -248,7 +254,8 @@ namespace ChinookAPI.Repositories
                         command.Parameters.AddWithValue("@updatedphone", updatedPhone);
                         command.Parameters.AddWithValue("@updatedemail", updatedEmail);
 
-                        updateRowsAffected = command.ExecuteNonQuery() > 0;
+                        bool updateRowsAffected = command.ExecuteNonQuery() > 0;
+                        return updateRowsAffected ? GetCustomer(customerId) : null;
                     }
                 }
             }
@@ -257,7 +264,7 @@ namespace ChinookAPI.Repositories
                 Console.WriteLine(ex.Message);
             }
 
-            return updateRowsAffected;
+            return null;
         }
 
         public IEnumerable<CustomerSpender> GetHighestSpendingCustomers()
