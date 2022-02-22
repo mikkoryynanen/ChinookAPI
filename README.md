@@ -40,7 +40,7 @@ The project is implemented with following technologies:
 1. Clone the project repository
 
 ```sh
-git clone url
+git clone https://github.com/mikkoryynanen/ChinookAPI.git
 ```
 
 2. Open project with Visual Studio
