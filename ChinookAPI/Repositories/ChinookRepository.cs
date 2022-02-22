@@ -9,6 +9,10 @@ namespace ChinookAPI.Repositories
 {
     public class ChinookRepository: IChinookRepository
     {
+        /// <summary>
+        /// Get all customers from database
+        /// </summary>
+        /// <returns>List of all customers</returns>
         public IEnumerable<Customer> GetAllCustomers()
         {
             string query = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email " +
@@ -53,6 +57,11 @@ namespace ChinookAPI.Repositories
             return customersList;
         }
 
+        /// <summary>
+        /// Get individual customer by selected id from database
+        /// </summary>
+        /// <param name="customerId">Id of customer</param>
+        /// <returns>Customer by id</returns>
         public Customer GetCustomer(int customerId)
         {
             string query = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email " +
@@ -98,6 +107,11 @@ namespace ChinookAPI.Repositories
             return customerById;
         }
 
+        /// <summary>
+        /// Get customer by matching part of name from database
+        /// </summary>
+        /// <param name="namePart">Part of customer's name</param>
+        /// <returns>Customer by matching part of name</returns>
         public Customer FindMatchingCustomerWithName(string namePart)
         {
             string query = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email " +
@@ -143,6 +157,12 @@ namespace ChinookAPI.Repositories
             return customerByName;
         }
 
+        /// <summary>
+        /// Get limit value of customers, starting from offset value, from database
+        /// </summary>
+        /// <param name="offset">Offset of results</param>
+        /// <param name="limit">Limit of results</param>
+        /// <returns>List of customers with offset and limit values</returns>
         public IEnumerable<Customer> GetNumberOfCustomers(int offset, int limit)
         {
             string query = "SELECT CustomerId, FirstName, LastName, Country, PostalCode, Phone, Email " +
@@ -194,6 +214,16 @@ namespace ChinookAPI.Repositories
             return customersPageList;
         }
 
+        /// <summary>
+        /// Create new customer with given values to database
+        /// </summary>
+        /// <param name="firstName">First name of customer</param>
+        /// <param name="lastName">Last name of customer</param>
+        /// <param name="country">Country of customer</param>
+        /// <param name="postalCode">Postal code of customer</param>
+        /// <param name="phone">Phone of customer</param>
+        /// <param name="email">Email of customer</param>
+        /// <returns>New customer if user is created or null if user is not created</returns>
         public Customer CreateCustomer(string firstName, string lastName, string country, string postalCode, string phone, string email)
         {
             string query = "INSERT INTO Customer(FirstName, LastName, Country, PostalCode, Phone, Email) " +
@@ -236,6 +266,13 @@ namespace ChinookAPI.Repositories
             return null;
         }
 
+        /// <summary>
+        /// Update existing customer with given values in database
+        /// </summary>
+        /// <param name="customerId">Id of customer</param>
+        /// <param name="updatedPhone">Updated phone number of customer</param>
+        /// <param name="updatedEmail">Updated email address of customer</param>
+        /// <returns>Updated customer if customer is updated or null if customer is not updated</returns>
         public Customer UpdateCustomer(int customerId, string updatedPhone, string updatedEmail)
         {
             string query = "UPDATE Customer " +
@@ -267,6 +304,10 @@ namespace ChinookAPI.Repositories
             return null;
         }
 
+        /// <summary>
+        /// Get highest spending customers in descending order from database
+        /// </summary>
+        /// <returns>List of highest spending customers</returns>
         public IEnumerable<CustomerSpender> GetHighestSpendingCustomers()
         {
             string query = "SELECT customer.FirstName, customer.LastName, SUM(invoice.Total) AS total " +
@@ -310,6 +351,10 @@ namespace ChinookAPI.Repositories
             return spenderList;
         }
 
+        /// <summary>
+        /// Get countries with amount of customers in descending order from database
+        /// </summary>
+        /// <returns>List of countries with amount of customers</returns>
         public IEnumerable<CustomerCountry> GetUserCountPerCountry()
         { 
             string query = "SELECT customer.Country, COUNT(*) AS count " +
@@ -352,6 +397,11 @@ namespace ChinookAPI.Repositories
             return perCountryList;
         }
 
+        /// <summary>
+        /// Get most popular genre(s) of given customer from database
+        /// </summary>
+        /// <param name="customerId">Id of customer</param>
+        /// <returns>List of most popular genre(s)</returns>
         public IEnumerable<CustomerGenre> GetMostPopularGenreForCustomer(int customerId)
         {
             string query = "SELECT TOP 1 genre.Name, COUNT(genre.Name) AS count " +
