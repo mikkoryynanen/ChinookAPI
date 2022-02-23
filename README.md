@@ -2,6 +2,8 @@
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/mikkoryynanen/ChinookAPI)
 
+[Chinook SQL Script](Chinook_SqlServer_AutoIncrementPKs.sql)
+
 ## Table of Contents
 
 - [General Information](#general-information)
@@ -35,7 +37,7 @@ The project is implemented with following technologies:
 
 ## Installation and Usage
 
-**NOTE:** You will need SQL Server to be connected with SQL Server Management Studio/Azure Data Studio. You will also need to execute *Chinook* script first.
+**NOTE:** You will need SQL Server to be connected with SQL Server Management Studio/Azure Data Studio. You will also need to execute *Chinook* script (found from top of this readme) first to create local database.
 
 1. Clone the project repository
 
